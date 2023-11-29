@@ -1,61 +1,45 @@
-class StopWatch extends React.Component {
+class MovieFinder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      timePassedInMilliSeconds: 0
-    }
+      searchTerm: '',
+      results: [],
+    };
 
-    this.timer = null;
-
-    this.start = this.start.bind(this);
-    this.stop = this.stop.bind(this);
-    this.reset = this.reset.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  start() {
-    if (!this.timer) {
-      let startTime = Date.now();
-      this.timer = setInterval(() => {
-        const stopTime = Date.now();
-        const timePassedInMilliSeconds = stopTime - startTime + this.state.timePassedInMilliSeconds;
-
-        this.setState({
-          timePassedInMilliSeconds,
-        });
-        
-        startTime = stopTime;
-      }, 250); // Executed every 250 millisecond
-    }
+  handleChange(event) {
+    this.setState({ searchTerm: event.target.value });
   }
 
-  stop() {
-    window.clearInterval(this.timer);
-    this.timer = null;
-  }
-
-  reset() {
-    this.stop();
-    this.setState({
-      timePassedInMilliSeconds: 0
-    })
+  handleSubmit(event) {
+    event.preventDefault();
+    //nothing yet prevents default
   }
 
   render() {
+    const { searchTerm, results } = this.state;
+
     return (
-      <div>
-        <h2 className="border px-3 py-4 rounded my-3 mx-auto text-center" style={{maxWidth: "300px"}}>
-          {Math.floor(this.state.timePassedInMilliSeconds / 1000)} s
-        </h2>
-        <div className="d-flex justify-content-center">
-          <button className="btn btn-outline-primary mr-2" onClick={this.start}>
-            start
-          </button>
-          <button className="btn btn-outline-danger mr-2" onClick={this.stop}>
-            stop
-          </button>
-          <button className="btn btn-outline-warning" onClick={this.reset}>
-            reset
-          </button>
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <form onSubmit={this.handleSubmit} className="form-inline my-4">
+              <input
+                type="text"
+                className="form-control mr-sm-2"
+                placeholder="frozen"
+                value={searchTerm}
+                onChange={this.handleChange}
+              />
+              <button type="submit" className="btn btn-primary">Submit</button>
+            </form>
+            {results.map((movie) => {
+              return null;  // returns nothing for now
+            })}
+          </div>
         </div>
       </div>
     )
@@ -64,5 +48,4 @@ class StopWatch extends React.Component {
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
-root.render(<StopWatch />)
-
+root.render(<MovieFinder />);
